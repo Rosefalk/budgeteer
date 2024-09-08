@@ -1,0 +1,25 @@
+{
+  "name": "budgeteer",
+  "version": "1.0.0",
+  "description": "converts sydbank csv to ynab format",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run build && node dist/main.js",
+    "build": "esbuild main.ts --bundle --platform=node --outfile=dist/main.js",
+    "create-blob": "node --experimental-sea-config sea-config.json",
+    "copy-node": "node -e \"require('fs').copyFileSync(process.execPath, 'artifacts/budgeteer.exe')\"",
+    "inject-app": "npx postject artifacts/budgeteer.exe NODE_SEA_BLOB artifacts/sea-prep.blob ` --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2",
+    "sign": "signtool sign /fd SHA256 dist/budgeteer.exe ",
+    "compile": "npm run build && npm run create-blob && npm run copy-node && npm run inject-app"
+  },
+  "author": "Thomas Rosefalk",
+  "license": "ISC",
+  "dependencies": {
+    "csv": "^6.3.8",
+    "esbuild": "^0.20.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7"
+  }
+}
