@@ -1,0 +1,17 @@
+{
+  "useFormatter": "sydbank",
+  "sydbank": {
+    "headers": ["date", "payee", "amount"],
+    "mapper": [0, 1, 2],
+    "delimiter": ";",
+    "bom": false,
+    "escape": false
+  },
+  "danskebank": {
+    "headers": ["date", "payee", "amount"],
+    "mapper": [0, 1, 2],
+    "delimiter": ";",
+    "bom": false,
+    "escape": false
+  }
+}

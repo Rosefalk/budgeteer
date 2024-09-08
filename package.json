@@ -6,12 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build && node dist/main.js",
-    "build": "esbuild main.ts --bundle --platform=node --outfile=dist/main.js",
+    "build": "esbuild main.ts --bundle --platform=node --outfile=dist/main.js && npm run copy-config && npm run copy-config-dist",
     "create-blob": "node --experimental-sea-config sea-config.json",
+    "copy-config": "node -e \"require('fs').copyFileSync('./config.json', './artifacts/config.json')\"",
+    "copy-config-dist": "node -e \"require('fs').copyFileSync('./config.json', './dist/config.json')\"",
     "copy-node": "node -e \"require('fs').copyFileSync(process.execPath, 'artifacts/budgeteer.exe')\"",
+    "delete-sea": "node -e \"require('fs').unlinkSync('./artifacts/sea-prep.blob')\"",
     "inject-app": "npx postject artifacts/budgeteer.exe NODE_SEA_BLOB artifacts/sea-prep.blob ` --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2",
     "sign": "signtool sign /fd SHA256 dist/budgeteer.exe ",
-    "compile": "npm run build && npm run create-blob && npm run copy-node && npm run inject-app"
+    "compile": "npm run build && npm run create-blob && npm run copy-node && npm run inject-app && npm run delete-sea"
   },
   "author": "Thomas Rosefalk",
   "license": "ISC",
@@ -20,6 +23,6 @@
     "esbuild": "^0.20.2"
   },
   "devDependencies": {
-    "@types/node": "^20.12.7"
+    "@types/node": "^20.16.5"
   }
 }
