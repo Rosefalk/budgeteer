@@ -15,6 +15,7 @@ interface Config {
 async function deleteSpecificFiles(files: string[]): Promise<void> {
     const dir = `${__dirname}`;
     try {
+      if(!files?.length) return;
 
       for (const file of files) {
         const filePath = path.join(dir, file);
@@ -49,13 +50,16 @@ const run = async () => {
     const configFileContent = await fs.readFile(`${__dirname}/config.json`, 'utf8');
     const fullConfig: Config = JSON.parse(configFileContent);
     const files = await findCSVFiles();
-    console.log(files)
+    
+    console.log('files', files)
+    
     const [filesForDeletion, inputFiles] = splitArray(files, (file) => file.includes('ouput.csv'));
     deleteSpecificFiles(filesForDeletion);
 
-    const { headers, mapper, delimiter }: Formatter = fullConfig[fullConfig.useFormatter];
+    const { headers, mapper, delimiter }: Formatter = <Formatter>fullConfig[fullConfig.useFormatter];
 
 
+    if(!inputFiles?.length) throw new Error(`no .csv files found in ${__dirname}`);
     const content = await fs.readFile(`${__dirname}/${inputFiles[0]}`, 'utf8');
     const records = parse(content, { delimiter, bom: true, escape: false });
     
